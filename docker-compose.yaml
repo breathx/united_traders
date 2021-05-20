@@ -1,0 +1,39 @@
+version: '3'
+services:
+  server:
+    image: breathx/united_traders
+    container_name: server
+    tty: true
+    environment:
+      - DATABASE_URL=postgres://admin:19d2574ba54f3ee984cb723b9976dce6bca524bde248f12ce52e9418ad4927ff@postgres_db:5432/united_traders_db
+    volumes:
+      - ./migrations/:/united_traders/migrations/
+    networks:
+      - app-network
+  postgres_db:
+    image: "postgres:12.6"
+    container_name: postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: united_traders_db
+      POSTGRES_PASSWORD: 19d2574ba54f3ee984cb723b9976dce6bca524bde248f12ce52e9418ad4927ff
+      POSTGRES_USER: admin
+    networks:
+      - app-network
+    volumes:
+      - pg_united_traders:/var/lib/postgresql/data
+  nginx:
+    image: nginx:1.15-alpine
+    container_name: nginx
+    volumes:
+      - ./data/nginx:/etc/nginx/conf.d
+      - ./static/:/var/tools/
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+volumes:
+  pg_united_traders:
+networks:
+  app-network:
+    driver: bridge
