@@ -9,12 +9,13 @@ use united_traders::server::routes::{
     get_version,
     get_health,
 };
+use united_traders::logs::routes::logs_routes;
 
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
 
-    let database_url = std::env::var("DATABASE_URL").expect("ERROR: variable DATABASE_URL is not set");
+    let database_url = std::env::var("DATABASE_URL").expect("ERROR: variable DATABASE_URL must be set");
     let manager = ConnectionManager::<PgConnection>::new(database_url);
     let pool = r2d2::Pool::builder()
         .build(manager)
@@ -36,7 +37,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::scope("/api")
                 .route("/version", web::get().to(get_version))
                 .route("/health", web::get().to(get_health))
-                // .configure(server_routes)
+                .configure(logs_routes)
             )
     })
     .bind("0.0.0.0:8088")?

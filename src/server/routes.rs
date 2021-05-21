@@ -1,22 +1,9 @@
-use actix_web::{
-    web, HttpResponse, HttpRequest,
-};
+use actix_web::HttpResponse;
 
-pub fn server_routes(cfg: &mut web::ServiceConfig) {
-    cfg.service(web::scope("/server")
-        .route("/version", web::get().to(get_version))
-        .route("/health", web::get().to(get_health))
-    );
+pub async fn get_version() -> HttpResponse {
+    HttpResponse::Ok().json(json!({"version": "1.0.0"}))
 }
 
-pub async fn get_version(
-    _req: HttpRequest
-) -> HttpResponse {
-    HttpResponse::Ok().json("")
-}
-
-pub async fn get_health(
-    _req: HttpRequest
-) -> HttpResponse {
-    HttpResponse::Ok().json("")
+pub async fn get_health() -> HttpResponse {
+    HttpResponse::Ok().json(json!({}))
 }

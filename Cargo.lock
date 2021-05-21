@@ -437,6 +437,7 @@ dependencies = [
  "libc",
  "num-integer",
  "num-traits",
+ "serde",
  "time 0.1.44",
  "winapi 0.3.9",
 ]
@@ -513,6 +514,18 @@ dependencies = [
  "pq-sys",
  "r2d2",
  "serde_json",
+]
+
+[[package]]
+name = "diesel-derive-enum"
+version = "1.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "70806b70be328e646f243680a3fc93b3cfdd6db373faa5110660a5dd5af243bc"
+dependencies = [
+ "heck",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -1769,7 +1782,9 @@ name = "united_traders"
 version = "0.1.0"
 dependencies = [
  "actix-web",
+ "chrono",
  "diesel",
+ "diesel-derive-enum",
  "diesel_migrations",
  "env_logger",
  "r2d2",
